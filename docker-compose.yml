@@ -7,7 +7,7 @@ services:
       - "3000:3000"
     volumes:
       - ./backend:/app
-    command: sh -c "npm install && npm start"
+    command: sh -c "npm install --include=dev && npm test"
     depends_on:
       - db
     networks:
