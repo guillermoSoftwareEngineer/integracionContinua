@@ -1,29 +1,31 @@
-# Single-stage build for CI (development)
+# Single-stage build for CI (test-ready)
 FROM node:18-alpine
 
 WORKDIR /app
 
-# Install build dependencies
+# native deps for better-sqlite3
 RUN apk add --no-cache python3 make g++ gcc sqlite-dev
 
-# Copy package files
+# copy manifests
 COPY package*.json ./
 
-# Install ALL dependencies (incl. dev) and rebuild SQLite3
+# install EVERYTHING (incl. jest) and rebuild sqlite
 RUN npm ci --build-from-source=better-sqlite3
 
-# Copy application code
+# copy source
 COPY . .
 
-# Create data directory for SQLite
+# data folder
 RUN mkdir -p /app/data
 
+# test env
 ENV NODE_ENV=test
 ENV PORT=3000
 ENV DB_PATH=/app/data/spendr.db
 ENV MOVEMENTS_CLEAR_SECRET=IDSOFTWARE123456
 
+# expose port (optional, tests use it)
 EXPOSE 3000
 
-# Keep container alive so Jenkins can exec npm test
-CMD ["sh", "-c", "npm start & tail -f /dev/null"]
+# run tests and exit → container ends when tests finish
+CMD ["npm", "test"]
