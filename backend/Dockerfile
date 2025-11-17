@@ -24,7 +24,6 @@ ENV PORT=3000
 ENV DB_PATH=/app/data/spendr.db
 ENV MOVEMENTS_CLEAR_SECRET=IDSOFTWARE123456
 
-# expose port (optional, tests use it)
 EXPOSE 3000
 
 # run tests and exit → container ends when tests finish
