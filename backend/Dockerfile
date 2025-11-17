@@ -25,4 +25,5 @@ ENV MOVEMENTS_CLEAR_SECRET=IDSOFTWARE123456
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+# Keep container alive so Jenkins can exec npm test
+CMD ["sh", "-c", "npm start & tail -f /dev/null"]
