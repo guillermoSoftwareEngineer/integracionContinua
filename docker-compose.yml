@@ -7,7 +7,7 @@ services:
       - "3000:3000"
     volumes:
       - ./backend:/app
-    command: sh -c "npm install --include=dev && tail -f /dev/null"
+    command: sh -c "npm install --include=dev > /app/data/install.log 2>&1; tail -f /dev/null"
     depends_on:
       - db
     networks:
