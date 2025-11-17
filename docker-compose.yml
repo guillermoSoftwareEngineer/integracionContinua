@@ -1,0 +1,40 @@
+services:
+  backend:
+    image: node:18-alpine
+    container_name: spendr-backend
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+    command: sh -c "npm install && npm start"
+    depends_on:
+      - db
+    networks:
+      - spendr-net
+
+  db:
+    image: alpine
+    container_name: spendr-db
+    command: |
+      sh -c "echo 'SQLite DB ready' && tail -f /dev/null"
+    volumes:
+      - ./backend/data:/data
+    networks:
+      - spendr-net
+
+  frontend:
+    image: node:20-alpine
+    container_name: spendr-frontend
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
+    networks:
+      - spendr-net
+
+networks:
+  spendr-net:
+    driver: bridge

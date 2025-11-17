@@ -1,0 +1,29 @@
+services:
+  db-init:
+    build:
+      context: .
+      dockerfile: Dockerfile.init
+    volumes:
+      - sqlite_data:/app/data
+    environment:
+      - DB_PATH=/app/data/spendr.db
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - sqlite_data:/app/data
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_PATH=/app/data/spendr.db
+      - MOVEMENTS_CLEAR_SECRET=test-secret
+      - PORT=3000
+      - TEST_TARGET=docker
+    depends_on:
+      - db-init
+
+volumes:
+  sqlite_data:
+    name: sqlite_data

@@ -1,0 +1,26 @@
+# Version control
+.git
+.gitignore
+
+# Dependencies
+node_modules
+npm-debug.log
+
+# Environment
+.env
+.env.*
+
+# Development
+*.md
+.dockerignore
+Dockerfile*
+docker-compose*
+.vscode
+
+# Data
+data/
+*.db
+
+# Logs
+logs/
+*.log

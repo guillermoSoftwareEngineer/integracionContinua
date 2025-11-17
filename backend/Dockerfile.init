@@ -1,0 +1,17 @@
+# Dockerfile for database initialization
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy only necessary files for database initialization
+COPY package*.json ./
+COPY src/db ./src/db
+
+# Install only production dependencies
+RUN npm install --only=prod
+
+# Create data directory
+RUN mkdir -p /app/data
+
+# Initialize database
+CMD ["node", "src/db/init.js"]
